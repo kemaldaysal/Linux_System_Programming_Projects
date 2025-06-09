@@ -1,0 +1,2 @@
+newfd: 1
+This will be written to file, instead of screen (stdout).

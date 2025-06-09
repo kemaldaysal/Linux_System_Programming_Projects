@@ -22,12 +22,12 @@ enum BUFFER_SIZES
     SIZE_BUF_FINAL_LOG = 256
 };
 
-typedef enum
+enum FILE_DESCRIPTORS
 {
     FD_STDIN = 0,
     FD_STDOUT = 1,
     FD_STDERR = 2
-} FILE_DESCRIPTORS;
+};
 
 typedef enum
 {
@@ -91,7 +91,7 @@ EXIT_TYPES write_to_a_file_safer(int fd, const char *buf, size_t len)
         total_written += bytes_written;
     }
 
-    char buf_log[SIZE_BUF_FINAL_LOG] = {0};
+    char buf_log[SIZE_BUF_FINAL_LOG] = {'\0'};
     int len_written_to_buf_log = snprintf(buf_log, sizeof(buf_log), "Successfully wrote %zu bytes written to file descriptor %d\n", total_written, fd);
     if (len_written_to_buf_log > 0)
     {
@@ -122,7 +122,7 @@ EXIT_TYPES close_file_safer(int fd)
 
 void log_error(const char *msg_prefix)
 {
-    char buf[SIZE_BUF_ERROR_LOG] = {0};
+    char buf[SIZE_BUF_ERROR_LOG] = {'\0'};
     int len_written_to_buf = snprintf(buf, sizeof(buf), "%s: %s\n", msg_prefix, strerror(errno));
     if (len_written_to_buf > 0)
     {
