@@ -80,6 +80,11 @@ int main()
         return ERR_FILE_CLOSE;
     }
 
+    if (close_file_safer(newfd) != SUCCESS)
+    {
+        return ERR_FILE_CLOSE;
+    }
+
     return SUCCESS;
 }
 
@@ -103,7 +108,6 @@ RETURN_TYPES write_to_file(const char *msg, int fd)
             return ERR_F_WRITE;
         }
         return SUCCESS;
-        
     }
     else
     {

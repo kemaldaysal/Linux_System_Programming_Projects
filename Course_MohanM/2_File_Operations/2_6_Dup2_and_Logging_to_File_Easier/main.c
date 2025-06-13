@@ -65,12 +65,17 @@ int main()
     */
 
     // More modern and controllable version that also works in atomic manner
-    int newfd = dup2(fd, FD_STDOUT); // close the fd on 2nd parameter and take it's place as new fd, more controllable
+    int newfd = dup2(fd, FD_STDOUT); // close the fd at 2nd parameter and take it's place as new fd, more controllable
     log_fd("newfd", newfd);
 
     printf("This will be written to file, instead of screen (stdout).\n");
 
     if (close_file_safer(fd) != SUCCESS)
+    {
+        return ERR_FILE_CLOSE;
+    }
+    
+    if (close_file_safer(newfd) != SUCCESS)
     {
         return ERR_FILE_CLOSE;
     }
