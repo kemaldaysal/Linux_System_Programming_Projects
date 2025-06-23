@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <sys/types.h>
 
-// ASK FOR DEBUGGING TIPS TO CHATGPT
-
 int main()
 {
     printf("Parent Process's ID before fork (PID: %d\n", getpid()); // This won't be executed in child
