@@ -86,7 +86,7 @@ int main()
             return ERR_FILE_READ;
         }
 
-        if (bytes_read == 0) // EOF
+        else if (bytes_read == 0) // EOF
         {
             log_error("EOF reached");
             break;

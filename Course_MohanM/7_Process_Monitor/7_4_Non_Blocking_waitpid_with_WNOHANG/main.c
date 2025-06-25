@@ -48,7 +48,7 @@ int main()
             exit(1);
         }
 
-        printf("--P (%d): Started executing, now i'll wait for my CHILD 1 (specific)...\n", getpid());
+        printf("--P (%d): Started executing, now i'll watch my CHILD 1 (specific) but i won't wait here...\n", getpid());
 
         ret_pid = waitpid(cpid_1, &status, WNOHANG);
         // ret_pid = waitpid(-1, &status, WNOHANG); // -1 matches ANY process like wait()
@@ -67,7 +67,7 @@ int main()
             printf("--P: Wait is done for SPECIFIC child (ID: %d), returned status is: %d\n", cpid_1, status);
         }
 
-        printf("--P (%d): Now i'll wait for my CHILD 2 (specific)...\n", getpid());
+        printf("--P (%d): Now i'll watch my CHILD 2 (specific) but i won't wait here....\n", getpid());
         ret_pid = waitpid(cpid_2, &status, WNOHANG);
 
         switch (ret_pid)

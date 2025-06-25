@@ -29,7 +29,7 @@ int main()
 
     if (p_temp == NULL)
     {
-        printf("Realloc (expand) failed!! Original block is still valid");
+        printf("Realloc (expand) failed!! Original block is still valid, but exiting...");
         free(p_nums);
         p_nums = NULL;
         exit(-1);

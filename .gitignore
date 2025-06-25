@@ -1,3 +1,9 @@
 Documents/
 .vscode/
 */Workspaces/
+
+**/main
+**/*.out
+**/*.o
+**/a.out
+**/*.exe

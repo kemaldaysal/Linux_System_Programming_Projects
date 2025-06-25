@@ -25,7 +25,7 @@ int main()
         printf("-C1 (PID: %d): Started executing, now sleeping for %d seconds\n", getpid(), T_SLP_C1);
         sleep(T_SLP_C1);
         printf("-C1: Exiting after waking up...\n");
-        exit(0);
+        exit(1);
 
     default:
 
@@ -39,7 +39,7 @@ int main()
             printf("-C2 (PID: %d): started executing, now sleeping for %d seconds\n", getpid(), T_SLP_C2);
             sleep(T_SLP_C2);
             printf("-C2: Exiting after waking up...\n");
-            exit(1);
+            exit(2);
         }
 
         printf("--P: (PID: %d): Started executing, now i'll wait.\n", getpid());

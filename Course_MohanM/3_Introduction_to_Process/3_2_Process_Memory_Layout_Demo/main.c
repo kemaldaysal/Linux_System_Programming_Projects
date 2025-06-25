@@ -21,9 +21,13 @@ int main(void)
     char *p_str;                        // p_str is a part of stack frame of main()
     char *p_buf = "welcome";            // p_buf is stored in stack frame of main(), but "welcome" string is stored in text segment, which is read-only!!
     char stack_buf[20] = {"stackData"}; // stack_buf is stored in stack frame and it contains value "stackData"
+    
+    printf("p_buf[3]: %c\n", p_buf[3]);
+    printf("stack_buf[3]: %c\n", stack_buf[3]);
 
-    // p_buf[0] = 'n'; // SEGMENTATION FAULT !!, p_buf is stored at stack but "welcome" string is stored in text segment. As p_buf[0] tries to write to text segment, which is read-only
+    // p_buf[0] = 'n'; // SEGMENTATION FAULT !!, p_buf is stored at stack but "welcome" string is stored in text segment. p_buf[0] is trying to write to text segment, which is read-only
     strcpy(stack_buf, "newString"); // possible as it's fine to change stored data on stack
+
 
     num_1 = 10; // 10 is stored in stack
     num_2 = 20; // 20 is stored in stack
@@ -35,7 +39,7 @@ int main(void)
     sum = add_num(num_1, num_2); 
     printf("The result of add is (%d)\n", sum);    
 
-    p_str = (char *) calloc(sizeof(char), 20); // p_str points to 20 bytes created on heap segment, but location of p_str itself is part of stack frame of main().
+    p_str = (char *) calloc(sizeof(char), 20); // p_str itself is part of stack frame of main(), it points to 20 bytes created on heap segment
     
     if (p_str == NULL)
     {

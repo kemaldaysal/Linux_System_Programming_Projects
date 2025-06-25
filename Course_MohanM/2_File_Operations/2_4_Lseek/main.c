@@ -25,7 +25,8 @@ typedef enum
     ERR_OPEN_ERROR = -2,
     ERR_WRITE = -3,
     ERR_ENCODING = -4,
-    ERR_FILE_CLOSE = -5
+    ERR_READ = -5,
+    ERR_FILE_CLOSE = -6
 
 } EXIT_TYPES;
 
@@ -69,7 +70,7 @@ int main()
     log_seek_position(seek_pos); // 2
 
     write_to_a_file_and_log_safe(fd, "00"); // // Elements 34 are gone, REPLACED by 00!!
-    // Elements doesn't shift automatically. But seek_pos shifted automatically by 2 !
+    // Elements don't get shifted automatically. But seek_pos shifted automatically by 2 !
 
     seek_pos = lseek(fd, 6, SEEK_CUR);
     log_seek_position(seek_pos); // 2 + 2 (written 00) + 6 = 10
@@ -115,22 +116,29 @@ EXIT_TYPES read_and_log_safe(int fd, size_t bytes_to_read_at_once)
 {
     char buf_read[SIZE_BUF_READ] = {'\0'};
     ssize_t len_bytes_read = read(fd, buf_read, bytes_to_read_at_once);
-
-    char buf_log[SIZE_BUF_LOG] = {'\0'};
-    int len_written_to_buf = snprintf(buf_log, sizeof(buf_log), "%zd bytes read from fd(%d) after lseek, which are:\n%.*s\n", len_bytes_read, fd, (int)len_bytes_read, buf_read);
-    if (len_written_to_buf > 0)
+    if (len_bytes_read == ERR_GENERAL)
     {
-        if (len_written_to_buf > SIZE_BUF_LOG)
-        {
-            len_written_to_buf = SIZE_BUF_LOG - 1;
-        }
-        write(FD_STDOUT, buf_log, len_written_to_buf);
-        return SUCCESS;
+        log_error("Reading error");
+        return ERR_READ;
     }
     else
     {
-        log_error("Encoding error");
-        return ERR_ENCODING;
+        char buf_log[SIZE_BUF_LOG] = {'\0'};
+        int len_written_to_buf = snprintf(buf_log, sizeof(buf_log), "%zd bytes read from fd(%d) after lseek, which are:\n%.*s\n", len_bytes_read, fd, (int)len_bytes_read, buf_read);
+        if (len_written_to_buf > 0)
+        {
+            if (len_written_to_buf > SIZE_BUF_LOG)
+            {
+                len_written_to_buf = SIZE_BUF_LOG - 1;
+            }
+            write(FD_STDOUT, buf_log, len_written_to_buf);
+            return SUCCESS;
+        }
+        else
+        {
+            log_error("Encoding error");
+            return ERR_ENCODING;
+        }
     }
 }
 

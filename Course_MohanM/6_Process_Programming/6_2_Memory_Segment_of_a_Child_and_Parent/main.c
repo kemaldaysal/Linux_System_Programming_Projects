@@ -8,7 +8,7 @@ static int glob = 111; // allocated in data segment
 /*
     ** Instructor's explanation about same memory addresses in different processes:
     - The address assigned to these variables may or may not be same(depends on memory at time of allocation), 
-    these address represent 2 different virtual memory, hence the address even if it same or not, 
+    these address represent 2 different virtual memory, hence the address even if it's same or not, 
     they are 2 different memory locations, hence stores different values in Parent and child process.
 
     - See the ChatGPT's answer for more detailed explanation.
@@ -42,9 +42,9 @@ int main()
     default:
         printf("P: I've created a child with ID (%d)\n", pid_child);
         printf("P: PID: %d, glob: %d (@%p), i_stack: %d (@%p)\n", getpid(), glob, &glob, i_stack, &i_stack); // glob is still 111 in here!!
-        // Changes to variables doesn't affect between processes. It only affects it's own process thanks to it's own virtual memory
+        // Changes to variables doesn't affect between processes. It only affects it's own process owing to it's own virtual memory
         
-        printf("P: test variable created in child: %d (@%p)\n", test, &test); // 32767, cant reach to child's memory 
+        printf("P: test variable created in child: %d (@%p)\n", test, &test); // 0, cant reach to child's memory 
         
         sleep(5);
     }

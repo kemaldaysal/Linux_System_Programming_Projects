@@ -19,7 +19,6 @@ Process termination status (int) 16 bit number
 enum MACROS
 {
     T_SLEEP = 10
-
 };
 
 int main()
@@ -52,7 +51,7 @@ int main()
 
         if (status != 0 && status < 256)
         {
-            printf("--P: Child (%d) is killed by a signal!!",cpid);
+            printf("--P: Child (%d) is killed by a signal!!", cpid);
         }
 
         printf("--P: Parent exiting\n");
