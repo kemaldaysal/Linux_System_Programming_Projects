@@ -48,9 +48,9 @@ int main()
         case -1:
             perror("Wait failed for child 1\n");
             exit(-1);
-        // case 0: // If WHOHANG option is enabled
-        //     printf("Child %d hasn't exited yet.\n", cpid_1);
-        //     break;
+            // case 0: // If WHOHANG option is enabled
+            //     printf("Child %d hasn't exited yet.\n", cpid_1);
+            //     break;
 
         default:
             printf("--P: Wait is done for SPECIFIC child (ID: %d), returned status is: %d\n", cpid_1, status);
@@ -65,9 +65,9 @@ int main()
         case -1:
             perror("Wait failed for child 2\n");
             exit(-1);
-        // case 0: // If WHOHANG option is enabled
-        //     printf("Child %d hasn't exited yet.\n", cpid_2); 
-        //     break;
+            // case 0: // If WHOHANG option is enabled
+            //     printf("Child %d hasn't exited yet.\n", cpid_2);
+            //     break;
 
         default:
             printf("--P: Wait is done for SPECIFIC child (ID: %d), returned status is: %d\n", cpid_2, status);
