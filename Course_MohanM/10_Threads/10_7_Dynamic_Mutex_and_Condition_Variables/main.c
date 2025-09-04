@@ -33,10 +33,6 @@
         }                                                    \
     } while (0)
 
-/* ----- Function Prototypes ---- */
-
-static void *thread_function(void *arg);
-
 /* ----- Globals (shared between threads) ----- */
 
 typedef struct
@@ -50,6 +46,10 @@ typedef struct
     int arg;
 } shared_data_t;
 
+/* ----- Function Prototypes ---- */
+
+static void *thread_function(void *arg);
+
 /* ----- Main Function ---- */
 
 int main()
@@ -57,13 +57,12 @@ int main()
     printf("-MT (pid: %d, thread id: %lu) : Started.\n", getpid(), (unsigned long)pthread_self());
 
     /* Allocate shared data dynamically */
-    shared_data_t * data = malloc(sizeof(shared_data_t));
+    shared_data_t *data = malloc(sizeof(shared_data_t));
     if (!data)
     {
         perror("Malloc failed");
         exit(EXIT_FAILURE);
     }
-
 
     CHECK_ERR(pthread_mutex_init(&(data->mutex), NULL), "Mutex init failed");
     CHECK_ERR(pthread_cond_init(&(data->cond_from_main), NULL), "cond init failed (main)");
@@ -86,7 +85,7 @@ int main()
 
     data->t1_to_proceed = 1;
     CHECK_ERR(pthread_cond_signal(&(data->cond_from_main)), "Signal to t1 failed");
-    CHECK_ERR(pthread_mutex_unlock(&(data->mutex)), "Unlock failed"); // NOT UNNECESSARY !! Read your notes
+    CHECK_ERR(pthread_mutex_unlock(&(data->mutex)), "Unlock failed");
 
     printf("-MT : t1 had reported it was ready, so i sent the start working signal to him.\n");
     printf("-MT : Exiting\n");
@@ -98,7 +97,7 @@ int main()
 
 static void *thread_function(void *arg)
 {
-    shared_data_t * data = ((shared_data_t*) arg);
+    shared_data_t *data = ((shared_data_t *)arg);
 
     printf("T1 (pid: %d, thread id: %lu) : Started executing\n", getpid(), (unsigned long)pthread_self());
     printf("T1 : Ready to do work...\n");
