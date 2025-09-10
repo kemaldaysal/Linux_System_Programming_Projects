@@ -10,12 +10,14 @@
 #include <unistd.h>
 #include <errno.h>
 #include <stdint.h>
+#include <poll.h>
 
 /* ---- Enumerations and Defines ---- */
 
-#define FILE_MODES (O_WRONLY) // fifo will be opened as write only mode
+#define FILE_MODES (O_WRONLY | O_NONBLOCK) // fifo will be opened as write only in non-blocking moode
 #define BUF_SIZE 256
 #define FIFO_PATH "../fifo_channel"
+#define TIMEOUT_POLL_IN_MS 100
 
 /* ---- Globals ---- */
 
@@ -51,18 +53,18 @@ int main()
         die("W : Opening fifo failed");
     }
 
-    printf("W : Opened FIFO, blocking until a reader exists...\n");
+    printf("W : Opened FIFO, starting polling...\n");
 
-    printf("W : A reader connected, proceeding...\n");
+    struct pollfd pfd = {.fd = fd, .events = POLLOUT};
 
-    char buf_write[BUF_SIZE] = {'\0'};
-    while (1)
+    char buf_write[BUF_SIZE] = {0};
+    while (!stop_flag)
     {
-        if (stop_flag)
+        if (poll(&pfd, 1, TIMEOUT_POLL_IN_MS) <= 0)
         {
-            die("W : Signal caught mid-write");
+            continue;
         }
-
+        
         printf("W : Enter string to be sent via fifo:\n");
         if (!fgets(buf_write, BUF_SIZE, stdin))
         {
@@ -74,22 +76,35 @@ int main()
 
         // ----- First write : Message length
 
-        if (write(fd, &len, sizeof(len)) != sizeof(len))
+        ssize_t total_written = 0;
+        while (total_written < sizeof(len))
         {
-            die("W : Failed to write length");
+            ssize_t n = write(fd, (((uint8_t*)&len) + total_written), (sizeof(len) - total_written));
+            if (n == -1)
+            {
+                if(errno == EINTR)
+                {
+                    if (stop_flag)
+                    {
+                        die("W : Signal caught mid-write");
+                    }
+                    continue;
+                }
+                else if (errno == EAGAIN)
+                {
+                    continue; // retry next poll
+                }
+                die("W : Failed to write length");
+            }
+            total_written += n;
         }
 
         // ----- Second write : Payload
 
-        ssize_t total_written = 0;
+        total_written = 0;
 
         while (total_written < len)
         {
-            if (stop_flag)
-            {
-                die("W : Signal caught mid-write");
-            }
-
             ssize_t n = write(fd, (buf_write + total_written), (len - total_written));
 
             if (n == -1)
@@ -108,14 +123,16 @@ int main()
                     fprintf(stderr, "W : Writing interrupted by a signal. Retrying the same write...");
                     continue;
                 }
-                else
+                else if (errno == EAGAIN)
                 {
-                    die("W : Error sending the buffer to fifo");
+                    continue;
                 }
+                die("W : Error sending the buffer to fifo");
             }
             total_written += n;
         }
     }
+    die("W : Signal caught");
 }
 
 void signal_handler(int sig)
