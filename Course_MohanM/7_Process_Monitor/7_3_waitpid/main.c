@@ -65,7 +65,7 @@ int main()
         case -1:
             perror("Wait failed for child 2\n");
             exit(-1);
-            // case 0: // If WHOHANG option is enabled
+            // case 0: // If WNOHANG option is enabled
             //     printf("Child %d hasn't exited yet.\n", cpid_2);
             //     break;
 

@@ -34,9 +34,9 @@ typedef enum
     ERR_ENCODING = -6
 } EXIT_TYPES;
 
-const uint8_t STRINGS_TO_READ_AT_ONCE = 1;
+const uint8_t LETTERS_TO_READ_AT_ONCE = 1;
 const char *STRING_TARGET = "Rohan";
-const char *LETTER_CORRECT = "M";
+const char *LETTER_NEW = "M";
 
 EXIT_TYPES log_error(const char *msg_prefix);
 EXIT_TYPES close_file_safer(int fd);
@@ -61,7 +61,7 @@ int main()
 
     for (;;)
     {
-        ssize_t bytes_read = read(fd, buf_read_bytes + total_bytes_read, STRINGS_TO_READ_AT_ONCE);
+        ssize_t bytes_read = read(fd, buf_read_bytes + total_bytes_read, LETTERS_TO_READ_AT_ONCE);
         static uint8_t target_iterator = 0;
 
         if (bytes_read == ERR_GENERAL_ERROR)
@@ -82,7 +82,7 @@ int main()
             if (target_iterator == strlen(STRING_TARGET))
             {
                 lseek(fd, -(strlen(STRING_TARGET)), SEEK_CUR);
-                ssize_t bytes_written_to_fd = write(fd, LETTER_CORRECT, strlen(LETTER_CORRECT));
+                ssize_t bytes_written_to_fd = write(fd, LETTER_NEW, strlen(LETTER_NEW));
                 if (bytes_written_to_fd == ERR_GENERAL_ERROR)
                 {
                     log_error("Error writing to fd");

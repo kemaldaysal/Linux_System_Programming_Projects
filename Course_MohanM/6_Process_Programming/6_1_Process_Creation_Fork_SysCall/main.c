@@ -5,7 +5,7 @@
 
 int main()
 {
-    printf("Parent Process's ID before fork (PID: %d\n", getpid()); // This won't be executed in child
+    printf("Parent Process's ID before fork (PID: %d)\n", getpid()); // This won't be executed in child
     pid_t id = fork();
 
     // ---------------- Only below codes (just after fork) will be executed in child, above won't be executed

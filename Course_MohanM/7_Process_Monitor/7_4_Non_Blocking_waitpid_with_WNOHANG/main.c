@@ -32,7 +32,7 @@ int main()
     case 0:
         printf("-C1 (%d): Started executing, now i'll sleep for %d seconds...\n", getpid(), T_SLP_C1);
         sleep(T_SLP_C1);
-        printf("-C1: Woke up, now i'll exit.\n");
+        printf("-C1 (%d): Woke up, now i'll exit.\n", getpid());
         exit(0);
     default:
 
@@ -44,7 +44,7 @@ int main()
         case 0:
             printf("-C2 (%d): Started executing, now i'll sleep for %d seconds...\n", getpid(), T_SLP_C2);
             sleep(T_SLP_C2);
-            printf("C2: Woke up, now i'll exit.\n");
+            printf("-C2 (%d): Woke up, now i'll exit.\n", getpid());
             exit(1);
         }
 
@@ -60,7 +60,7 @@ int main()
             perror("Wait failed for child 1\n");
             exit(-1);
         case 0:
-            printf("Child %d hasn't exited yet.\n", cpid_1);
+            printf("--P (%d): Child %d hasn't exited yet.\n", getpid(), cpid_1);
             break;
 
         default:
@@ -73,17 +73,17 @@ int main()
         switch (ret_pid)
         {
         case -1:
-            perror("Wait failed for child 2\n");
+            perror("--P (%d): Wait failed for child 2\n");
             exit(-1);
         case 0:
-            printf("Child %d hasn't exited yet.\n", cpid_2);
+            printf("--P (%d): Child %d hasn't exited yet.\n", getpid(), cpid_2);
             break;
 
         default:
             printf("--P: Wait is done for SPECIFIC child (ID: %d), returned status is: %d\n", cpid_2, status);
         }
 
-        printf("--P: Parent exiting\n");
+        printf("--P (%d): Parent exiting\n", getpid());
     }
 
     return 0;

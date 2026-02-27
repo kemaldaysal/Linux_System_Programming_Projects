@@ -14,9 +14,9 @@ int main()
 
     printf("--P (%d): Started executing before fork. Now i'll sleep for %d seconds.\n", getpid(), T_SLP_P);
 
-    pid_t id = fork();
+    pid_t pid = fork();
 
-    switch (id)
+    switch (pid)
     {
     case -1:
         perror("Fork failed!\n");
@@ -40,7 +40,7 @@ int main()
 
     default:
         sleep(T_SLP_P);
-        printf("--P (%d): Woke up. I have created child process with ID (%d)\n", getpid(), id);
+        printf("--P (%d): Woke up. I have created child process with ID (%d)\n", getpid(), pid);
         printf("--P (%d): Exiting...\n", getpid());
 
     }

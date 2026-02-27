@@ -46,7 +46,7 @@ int main()
         pid_t cpid = wait(&status);
         if (cpid == -1)
         {
-            perror("--P: Wait error for 1st child\n");
+            printf("--P: Wait error for a child, returned status is: %d\n", status);
             exit(-1);
         }
 

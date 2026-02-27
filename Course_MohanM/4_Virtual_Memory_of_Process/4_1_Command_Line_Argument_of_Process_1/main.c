@@ -1,4 +1,4 @@
-/* Demo program to show the command line arguments of process */
+/* Demo program to show the command line arguments of a process */
 
 #include <stdio.h>
 #include <string.h>

@@ -34,11 +34,9 @@ int main()
         p_nums = NULL;
         exit(-1);
     }
-    else 
-    {
-        p_nums = p_temp;
-        p_temp = NULL;
-    }
+    
+    p_nums = p_temp;
+    p_temp = NULL;
 
     for (size_t i = 10; i < num_of_ints; i++)
     {
@@ -75,11 +73,9 @@ int main()
         p_nums = NULL;
         exit(-1);
     }
-    else 
-    {
-        p_nums = p_temp;
-        p_temp = NULL;
-    }
+
+    p_nums = p_temp;
+    p_temp = NULL;
 
     printf("--- Displaying p_nums from start after realloc (shrink)---\n");
     for (size_t i = 0; i < num_of_ints; i++)

@@ -22,9 +22,9 @@ int main()
 
     printf("--P (%d): Started executing before fork. Now i'll sleep for %d seconds.\n", getpid(), T_SLP_P_1);
 
-    pid_t id = fork();
+    pid_t pid = fork();
 
-    switch (id)
+    switch (pid)
     {
     case -1:
         perror("Fork failed!\n");
@@ -40,9 +40,9 @@ int main()
 
     default:
         sleep(T_SLP_P_1);
-        printf("--P (%d): Woke up. I have created child process with ID (%d)\n", getpid(), id);
+        printf("--P (%d): Woke up. I have created child process with ID (%d)\n", getpid(), pid);
         printf("(Here, you should run 'ps aux | grep Z' on console)\n");
-        waitpid(id, NULL, 0); // This'll remove the zombie state of the child process
+        waitpid(pid, NULL, 0); // This'll remove the zombie state of the child process
 
         // So once the parent collects the exit status of the child process, the zombie state is removed.
 

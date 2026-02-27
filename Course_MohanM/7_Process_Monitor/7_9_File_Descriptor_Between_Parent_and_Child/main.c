@@ -98,7 +98,7 @@ int main()
             exit(ERR_FILE_WRITE);
         }
 
-        close_file_safer(fd); // Child must close it's own copy of fd when it's finished with file (Although OS closes it after child finished executing, but it's bad practice to leave it to OS.)
+        close_file_safer(fd); // Child must close it's own copy of fd when it's finished with file (Although OS closes it after child finished executing, it's a bad practice to leave it to OS.)
         
         printf("--C (%d) : Child is exiting...\n", getpid());        
         exit(SUCCESS);        // On exits, kernel cleans up all the fds of the process. So it closes the file if it's forgotten but it remains open unnecessarily, hence wasting resources.

@@ -12,7 +12,7 @@ static int glob = 111; // allocated in data segment
     they are 2 different memory locations, hence stores different values in Parent and child process.
 
     - See the ChatGPT's answer for more detailed explanation.
-    - See the COpy-on-Write (CoW) systems, meaning physical memory is shared until 
+    - See the Copy-on-Write (CoW) systems, meaning physical memory is shared until 
     one process writes to it, at which point a separate copy is made
 
 */

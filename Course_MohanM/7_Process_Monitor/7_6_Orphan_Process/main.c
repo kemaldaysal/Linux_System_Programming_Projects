@@ -21,7 +21,7 @@ int main()
     case 0:
         printf("-C (%d): Started executing, my parent is %d. now i'll sleep for %d seconds...\n", getpid(), getppid(), T_SLP_C);
         sleep(T_SLP_C);
-        printf("-C: Woke up, my parent is already gone, i'm adopted by %d. Now i'll exit.\n", getppid());
+        printf("-C (%d): Woke up, my parent is already exited before me, i'm adopted by %d. Now i'll exit.\n", getpid(), getppid());
         exit(2);
 
     default:

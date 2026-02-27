@@ -7,7 +7,7 @@
 int main()
 {
     printf("Process ID (PID) is (%d)\n", getpid());
-    printf("Process ID Of creator (parent) (PPID) is: (%d)\n", getppid());
+    printf("Process ID of creator (parent) (PPID) is: (%d)\n", getppid());
 
     sleep(5);
 }
