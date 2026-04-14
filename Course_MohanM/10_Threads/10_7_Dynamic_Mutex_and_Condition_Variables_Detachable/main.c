@@ -10,6 +10,15 @@
  *   Or make the thread itself responsible for destroying its own mutex/cond, since only it knows when it’s done.
  *   Or wrap everything in a heap-allocated struct, and the detached thread frees it when finished.
  *      So in this example, we'll use a heap-allocated struct to demonstrate the real life usage.
+ * 
+ * --- The necessity of destroyers, instead of just free() functions
+ * 
+ * free(data) only releases the memory block back to the allocator. It does not run any destructor logic for objects living inside
+ *   that block, because in C there are no automatic destructors.
+ * pthread_mutex_t and pthread_cond_t are not “just bytes you can drop on the floor.” After pthread_*_init, they may own kernel / libc 
+ *   resources (e.g., futex state, waiter queues, internal bookkeeping). 
+ *   Those resources are released by pthread_mutex_destroy() / pthread_cond_destroy(), not by free()
+ * -Further explanation is at ChatGPT conversation.
  */
 
 /* ----- Libraries ---- */
@@ -20,6 +29,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <stdbool.h>
 
 /* ----- Macros & Macro Functions ---- */
 
@@ -88,6 +98,13 @@ int main()
     CHECK_ERR(pthread_mutex_unlock(&(data->mutex)), "Unlock failed");
 
     printf("-MT : t1 had reported it was ready, so i sent the start working signal to him.\n");
+
+    printf("-MT : Making sure that i won't use dynamic data struct. From now on, the threads that use it are responsible for it.\n");
+
+    shared_data_t *to_free = data;
+    data = NULL;   // prevent accidental reuse in main, since the threads that use "data" are responsible for cleanup now.
+    (void)to_free; // optional: silence unused warnings if you refactor
+
     printf("-MT : Exiting\n");
 
     pthread_exit((void *)EXIT_SUCCESS);

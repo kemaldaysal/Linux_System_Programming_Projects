@@ -61,11 +61,23 @@ int main()
     char buf_read[SIZE_OF_READ_BUF];
     int bytes_read = 0;
 
-    while ((bytes_read = read(fd_pipe[READING_END], buf_read, BYTES_TO_READ_AT_ONCE)) > 0) // end until the end of the file
+    while ((bytes_read = read(fd_pipe[READING_END], buf_read, BYTES_TO_READ_AT_ONCE)) > 0) // read until the end of the file
     {
         buf_read[bytes_read] = '\0'; // null-terminate for safe printing
         printf("%d bytes read, which are: %s\n", bytes_read, buf_read);
     }
+    
+    if (bytes_read == -1) 
+    {
+        perror("read");
+        exit(EXIT_FAILURE);
+    }    
+
+    if (close(fd_pipe[READING_END]) == -1) // not necessary but got practice to close the read end therefore to ensure cleanup
+    {
+        perror("close read end");
+        exit(EXIT_FAILURE);
+    }    
 
     printf("Exiting...\n");
     return 0;

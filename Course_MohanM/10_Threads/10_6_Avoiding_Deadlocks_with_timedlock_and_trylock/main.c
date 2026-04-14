@@ -87,7 +87,7 @@ void *thread_func_t2(void *arg)
 
     // --- You can try below 2 functions and see their behaviour by uncommenting them.
 
-    CHECK_ERR(pthread_mutex_timedlock(&mutex, &ts), "--T2 : Error locking mutex"); // Tries to lock and stays in blocked state until timeout it out, then returns error if can't lock
+    CHECK_ERR(pthread_mutex_timedlock(&mutex, &ts), "--T2 : Error locking mutex"); // Tries to lock and stays in blocked state until timeout ends, then returns error if can't lock
     // CHECK_ERR(pthread_mutex_trylock(&mutex), "--T2 : Error locking mutex"); // Tries to lock immediately and gives error if locking is failed and mutex is busy, returns error and avoids deadlock.
 
     CHECK_ERR(pthread_mutex_unlock(&mutex), "--T2 : Error unlocking mutex");

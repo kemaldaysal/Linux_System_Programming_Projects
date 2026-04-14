@@ -71,7 +71,7 @@ static void cleanup_mutex(void *arg);
 
 bool t1_ready = 0;
 bool t1_to_continue = 0;
-size_t counter = 0;
+volatile size_t counter = 0;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond_from_t1 = PTHREAD_COND_INITIALIZER;
 pthread_cond_t cond_from_main = PTHREAD_COND_INITIALIZER;
